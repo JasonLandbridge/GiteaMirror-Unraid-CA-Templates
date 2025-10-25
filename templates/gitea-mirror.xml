@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<Container version="2">
+	<Name>Gitea Mirror</Name>
+	<Repository>ghcr.io/raylabshq/gitea-mirror</Repository>
+	<Registry>https://ghcr.io/raylabshq/gitea-mirror</Registry>
+	<Network>bridge</Network>
+	<MyIP/>
+	<Shell>sh</Shell>
+	<Privileged>false</Privileged>
+	<Support>https://github.com/RayLabsHQ/gitea-mirror/discussions</Support>
+	<GitHub>https://github.com/RayLabsHQ/gitea-mirror</GitHub>
+	<ReadMe>https://github.com/RayLabsHQ/gitea-mirror#readme</ReadMe>
+	<Branch>
+		<Tag>latest</Tag>
+		<TagDescription>Stable releases built from the main branch.</TagDescription>
+	</Branch>
+	<Project>https://github.com/RayLabsHQ/gitea-mirror</Project>
+	<Overview>Automatically mirror GitHub repositories, organizations, metadata, and releases into your self-hosted Gitea instance with a Bun-powered management UI.</Overview>
+	<Category>Tools:</Category>
+	<WebUI>http://[IP]:[PORT:4321]/</WebUI>
+	<TemplateURL>https://raw.githubusercontent.com/RayLabsHQ/Unraid-CA-Templates/main/templates/gitea-mirror.xml</TemplateURL>
+	<Icon>https://raw.githubusercontent.com/RayLabsHQ/gitea-mirror/main/.github/assets/logo.png</Icon>
+	<ExtraParams/>
+	<PostArgs/>
+	<CPUset/>
+	<Date>2025-10-25</Date>
+	<Description>Gitea Mirror keeps a Gitea instance synchronized with GitHub. The web UI lets you configure mirroring strategies, authentication, metadata sync (issues, pull requests, wiki, releases), auto-discovery, and scheduled jobs. Mount /app/data to persist the SQLite database and configuration, and optionally mount /app/certs to trust custom certificate authorities.</Description>
+	<Networking>
+		<Mode>bridge</Mode>
+		<Publish>
+			<Port>
+				<HostPort>[PORT:4321]</HostPort>
+				<ContainerPort>4321</ContainerPort>
+				<Protocol>tcp</Protocol>
+			</Port>
+		</Publish>
+	</Networking>
+	<Data>
+		<Volume>
+			<HostDir/>
+			<ContainerDir>/app/data</ContainerDir>
+			<Mode>rw</Mode>
+		</Volume>
+		<Volume>
+			<HostDir/>
+			<ContainerDir>/app/certs</ContainerDir>
+			<Mode>ro</Mode>
+		</Volume>
+	</Data>
+	<Environment>
+		<Variable>
+			<Value>production</Value>
+			<Name>NODE_ENV</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value>0.0.0.0</Value>
+			<Name>HOST</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value>4321</Value>
+			<Name>PORT</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value>file:data/gitea-mirror.db</Value>
+			<Name>DATABASE_URL</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value/>
+			<Name>BETTER_AUTH_SECRET</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value>http://[IP]:[PORT:4321]</Value>
+			<Name>BETTER_AUTH_URL</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value>http://[IP]:[PORT:4321]</Value>
+			<Name>BETTER_AUTH_TRUSTED_ORIGINS</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value/>
+			<Name>PUBLIC_BETTER_AUTH_URL</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value>3</Value>
+			<Name>MIRROR_ISSUE_CONCURRENCY</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value>5</Value>
+			<Name>MIRROR_PULL_REQUEST_CONCURRENCY</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value>false</Value>
+			<Name>SCHEDULE_ENABLED</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value>true</Value>
+			<Name>AUTO_IMPORT_REPOS</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value>false</Value>
+			<Name>AUTO_MIRROR_REPOS</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value>3600</Value>
+			<Name>DELAY</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value/>
+			<Name>GITHUB_USERNAME</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value/>
+			<Name>GITHUB_TOKEN</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value/>
+			<Name>GITEA_URL</Name>
+			<Mode/>
+		</Variable>
+		<Variable>
+			<Value/>
+			<Name>GITEA_TOKEN</Name>
+			<Mode/>
+		</Variable>
+	</Environment>
+	<Labels/>
+	<Config Name="WebUI Port" Target="4321" Default="4321" Mode="tcp" Description="Container Port: 4321" Type="Port" Display="always" Required="true" Mask="false">4321</Config>
+	<Config Name="App Data (Container Path: /app/data)" Target="/app/data" Default="" Mode="rw" Description="Persistent storage for the SQLite database and configuration" Type="Path" Display="always" Required="true" Mask="false"/>
+	<Config Name="Custom CA Certificates (Container Path: /app/certs)" Target="/app/certs" Default="" Mode="ro" Description="Optional: mount a folder of *.crt files to trust private certificate authorities" Type="Path" Display="advanced" Required="false" Mask="false"/>
+	<Config Name="BETTER_AUTH_SECRET" Target="BETTER_AUTH_SECRET" Default="" Mode="" Description="Required secret used for session signing (minimum 32 characters). Leave blank to auto-generate and store in /app/data." Type="Variable" Display="always" Required="true" Mask="true"/>
+	<Config Name="BETTER_AUTH_URL" Target="BETTER_AUTH_URL" Default="http://[IP]:[PORT:4321]" Mode="" Description="External URL that users reach the app at. Update when publishing behind reverse proxies or custom domains." Type="Variable" Display="always" Required="true" Mask="false">http://[IP]:[PORT:4321]</Config>
+	<Config Name="BETTER_AUTH_TRUSTED_ORIGINS" Target="BETTER_AUTH_TRUSTED_ORIGINS" Default="http://[IP]:[PORT:4321]" Mode="" Description="Comma-separated list of trusted origins allowed to initiate auth requests." Type="Variable" Display="advanced" Required="false" Mask="false">http://[IP]:[PORT:4321]</Config>
+	<Config Name="PUBLIC_BETTER_AUTH_URL" Target="PUBLIC_BETTER_AUTH_URL" Default="" Mode="" Description="Optional public auth URL used by the web client when it differs from the browser origin." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+	<Config Name="GitHub Username" Target="GITHUB_USERNAME" Default="" Mode="" Description="GitHub username used for API access. Configure credentials after first sign-in if left blank." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+	<Config Name="GitHub Token" Target="GITHUB_TOKEN" Default="" Mode="" Description="GitHub personal access token with repo and admin:org scopes." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+	<Config Name="Gitea URL" Target="GITEA_URL" Default="" Mode="" Description="Destination Gitea server URL (e.g. https://gitea.example.com)." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+	<Config Name="Gitea Token" Target="GITEA_TOKEN" Default="" Mode="" Description="Gitea personal access token with repository write access." Type="Variable" Display="advanced" Required="false" Mask="true"/>
+	<Config Name="Schedule Enabled" Target="SCHEDULE_ENABLED" Default="false" Mode="" Description="Enable automatic mirroring on a schedule." Type="Variable" Display="advanced" Required="false" Mask="false">false</Config>
+	<Config Name="Auto Import Repositories" Target="AUTO_IMPORT_REPOS" Default="true" Mode="" Description="Automatically import new GitHub repositories on startup or schedule runs." Type="Variable" Display="advanced" Required="false" Mask="false">true</Config>
+	<Config Name="Auto Mirror Repositories" Target="AUTO_MIRROR_REPOS" Default="false" Mode="" Description="Automatically keep repositories mirrored without manual approval." Type="Variable" Display="advanced" Required="false" Mask="false">false</Config>
+	<Config Name="Mirror Interval / Delay" Target="DELAY" Default="3600" Mode="" Description="Seconds between scheduled mirror runs. Cron expressions are also supported." Type="Variable" Display="advanced" Required="false" Mask="false">3600</Config>
+</Container>
